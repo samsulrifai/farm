@@ -1,0 +1,4 @@
+import type { Flock, Health } from '../domain'
+import { Delete, Empty, Table } from '../components/ui'
+
+export function HealthPage({ items, flocks, onDelete }: { items: Health[]; flocks: Flock[]; onDelete: (id: string) => void }) { return <Table note="Catat tindakan kesehatan agar riwayat tiap batch terlacak."><thead><tr><th>Kandang</th><th>Jenis</th><th>Detail</th><th>Jadwal berikut</th><th>Catatan</th><th></th></tr></thead><tbody>{items.length ? items.map(x => <tr key={x.id}><td data-label="Kandang">{flocks.find(f => f.id === x.flockId)?.name ?? '—'}</td><td data-label="Jenis"><span className="status ok">{x.kind}</span></td><td data-label="Detail">{x.detail}</td><td data-label="Jadwal berikut">{x.nextDate || '—'}</td><td data-label="Catatan">{x.note || '—'}</td><td><Delete onClick={() => onDelete(x.id)} /></td></tr>) : <Empty col={6} />}</tbody></Table> }

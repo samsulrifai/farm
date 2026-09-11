@@ -1,0 +1,5 @@
+import type { Sale } from '../domain'
+import { fmt, money } from '../domain'
+import { Summary, Table } from '../components/ui'
+
+export function SalesPage({ items, stock, receivable, onPay }: { items: Sale[]; stock: number; receivable: number; onPay: (s: Sale) => void }) { return <><section className="feed-summary"><Summary label="STOK TELUR" value={`${fmt(Math.max(0, stock))} butir`} /><Summary label="PIUTANG TERBUKA" value={money(receivable)} warn={Boolean(receivable)} /></section><Table note="Klik piutang untuk menerima pembayaran."><thead><tr><th>Pelanggan</th><th>Total</th><th>Dibayar</th><th>Status</th></tr></thead><tbody>{items.map(s => { const debt = s.qty * s.price - s.paid; return <tr key={s.id}><td data-label="Pelanggan"><b>{s.customer}</b></td><td data-label="Total">{money(s.qty * s.price)}</td><td data-label="Dibayar">{money(s.paid)}</td><td data-label="Status">{debt ? <button className="status warn pay-button" onClick={() => onPay(s)}>Piutang {money(debt)}</button> : <span className="status ok">Lunas</span>}</td></tr> })}</tbody></Table></> }
