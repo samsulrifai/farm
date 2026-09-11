@@ -10,7 +10,8 @@ try {
   const files = (await readdir(new URL('../db/', import.meta.url))).filter(x => x.endsWith('.sql')).sort()
   for (const file of files) {
     if (applied.has(file)) continue
-    if (file === '001_init.sql' && (await client.query("select to_regclass('public.flocks') table_name")).rows[0].table_name) {
+    const baseline = { '001_init.sql': 'flocks', '002_users.sql': 'users' }[file]
+    if (baseline && (await client.query("select to_regclass($1) table_name", [`public.${baseline}`])).rows[0].table_name) {
       await client.query('insert into schema_migrations(name) values($1)', [file]); continue
     }
     await client.query(await readFile(new URL(`../db/${file}`, import.meta.url), 'utf8'))
