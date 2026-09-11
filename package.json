@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "api": "node --env-file=.env server.mjs",
     "db:migrate": "node --env-file=.env scripts/migrate.mjs",
-    "db:verify": "node --env-file=.env scripts/verify-schema.mjs"
+    "db:verify": "node --env-file=.env scripts/verify-schema.mjs",
+    "owner:create": "node --env-file=.env scripts/create-owner.mjs"
   },
   "dependencies": {
     "express": "^5.2.1",
